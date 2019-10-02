@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
@@ -17,23 +17,23 @@ const Button = styled.button({
 });
 
 export const CalendarRow = () => {
-  const initStartDate = moment([2019, 2, 11]);
-  const initEndDate = moment([2019, 3, 11]);
-  const [state, setState] = useState({ initStartDate, initEndDate });
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [focusedInput, setFocusedInput] = useState('startDate');
 
   return (
     <Container>
       <DateRangePicker
-        startDate={null} // momentPropTypes.momentObj or null,
+        startDate={startDate} // momentPropTypes.momentObj or null,
         startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-        endDate={null} // momentPropTypes.momentObj or null,
+        endDate={endDate} // momentPropTypes.momentObj or null,
         endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
         onDatesChange={({ startDate, endDate }) => {
-          console.log(startDate);
-          setState({ startDate, endDate })
+          setStartDate(startDate);
+          setEndDate(endDate);
         }} // PropTypes.func.isRequired,
-        focusedInput={'startDate'} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-        onFocusChange={focusedInput => () => {}} // PropTypes.func.isRequired,
+        focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+        onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
       />
       <Button>delete</Button>
     </Container>
