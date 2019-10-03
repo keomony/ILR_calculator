@@ -4,6 +4,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import styled from '@emotion/styled';
 import * as moment from 'moment';
+import {calculateRemainingAbsentDays} from './ilrCalculator';
 
 const Container = styled.div({
   display: 'flex',
@@ -29,8 +30,12 @@ export const CalendarRow = () => {
         endDate={endDate} // momentPropTypes.momentObj or null,
         endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
         onDatesChange={({ startDate, endDate }) => {
-          setStartDate(startDate);
-          setEndDate(endDate);
+          if(startDate) setStartDate(startDate);
+          if(endDate) setEndDate(endDate);
+          calculateRemainingAbsentDays([{
+            start: startDate, 
+            end: endDate
+          }]);
         }} // PropTypes.func.isRequired,
         focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
         onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
