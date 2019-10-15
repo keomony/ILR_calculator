@@ -1,8 +1,10 @@
-import {calculateRemainingAbsentDays, transformInputDateListToMomentDate} from './ilrCalculator';
+import {calculateRemainingAbsentDays, transformInputDateListToMomentDate} from './ilrCalculator'
+import moment from 'moment';
 
 const DATE_FORMAT = 'DD-MM-YYYY';
 
 test("Absent for 8 days, should return remaining 172 days.", ()=> {
+    const currentDate = moment(new Date("11-11-2019"));
     let absentList = [
         {   //8 days
             "start": '01-09-2019',
@@ -10,10 +12,11 @@ test("Absent for 8 days, should return remaining 172 days.", ()=> {
         }
     ];
     const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
-    expect(calculateRemainingAbsentDays(transformedAbsentList)).toBe(172);
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(172);
 });
 
 test("Multiple absences, should accumulate all absences days ", ()=> {
+    const currentDate = moment(new Date("11-11-2019"));
     let absentList = [
         {   //1 day
             "start": '01-07-2019',
@@ -25,10 +28,11 @@ test("Multiple absences, should accumulate all absences days ", ()=> {
         }
     ];
     const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
-    expect(calculateRemainingAbsentDays(transformedAbsentList)).toBe(171)
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(171)
 });
 
 test("Absence includes dates outside 365 days period, should ignore absences that are older than 365 days.", ()=> {
+    const currentDate = moment(new Date("11-11-2019"));
     let absentList = [
         {   //Absence outside the period
             "start": '01-07-2017',
@@ -44,14 +48,15 @@ test("Absence includes dates outside 365 days period, should ignore absences tha
         }
     ];
     const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
-    expect(calculateRemainingAbsentDays(transformedAbsentList)).toBe(172)
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(172)
 });
 
 test("Only a part of the absence fall inside the 365 days period, should consider only absent days within the period", ()=> {
-    let absentList = [
+    const currentDate = moment(new Date("11-11-2019"));
+   let absentList = [
         {   //1 day
-            "start": '20-09-2018',
-            "end": '04-10-2018'
+            "start": '10-11-2018',
+            "end": '12-11-2018'
         },
         {   //8 days
             "start": '01-09-2019',
@@ -59,10 +64,11 @@ test("Only a part of the absence fall inside the 365 days period, should conside
         }
     ];
     const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
-    expect(calculateRemainingAbsentDays(transformedAbsentList)).toBe(171)
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(171);
 });
 
 test("Absent more that 180 days, should return 0 remaining day", ()=> {
+    const currentDate = moment(new Date("11-11-2019"));
     let absentList = [
         {
             "start": '01-01-2019',
@@ -70,5 +76,5 @@ test("Absent more that 180 days, should return 0 remaining day", ()=> {
         }
     ];
     const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
-    expect(calculateRemainingAbsentDays(transformedAbsentList)).toBe(0)
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(0)
 });
