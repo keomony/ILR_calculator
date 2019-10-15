@@ -6,7 +6,7 @@ const MAX_ABSENT_DAYS = 180;
 export function calculateRemainingAbsentDays(absentList, currentDate){
     const beginDate = calcBeginDateFromToday(WINDOW_PERIOD_DAYS, currentDate);
     const datesWithinPeriodList = filterAbsentDatesMustFallWithinPeriod(beginDate, absentList);
-    const totalAbsentDays = calcTotalAbsentDays(datesWithinPeriodList);
+    let totalAbsentDays = calcTotalAbsentDays(datesWithinPeriodList);
     const remainingDays = MAX_ABSENT_DAYS - totalAbsentDays;
     return remainingDays > 0 ? remainingDays : 0;
 }
@@ -26,11 +26,11 @@ function calcBeginDateFromToday(daysBeforeToday, currentDate) {
 
 
 function filterAbsentDatesMustFallWithinPeriod(beginDate, absentList){
-    const filteredEndDateAfterBeginDateList =  absentList.filter(interval => interval.end.isSameOrAfter(beginDate));
+    const filteredEndDateAfterBeginDateList =  absentList.filter(interval => interval.end.isSameOrAfter(beginDate) && !interval.start.isSame(interval.end));
     return filteredEndDateAfterBeginDateList.map(interval => {
         if (interval.start.isBefore(beginDate)) {
-            interval.start = beginDate.subtract(1, 'days')
-        }
+            interval.start = beginDate.subtract(1, 'days').startOf('day');
+        } 
         return interval;
     });
 }

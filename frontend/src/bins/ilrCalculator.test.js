@@ -53,9 +53,9 @@ test("Absence includes dates outside 365 days period, should ignore absences tha
 
 test("Only a part of the absence fall inside the 365 days period, should consider only absent days within the period", ()=> {
     const currentDate = moment(new Date("11-11-2019"));
-   let absentList = [
+    let absentList = [
         {   //1 day
-            "start": '10-11-2018',
+            "start": '09-11-2018',
             "end": '12-11-2018'
         },
         {   //8 days
@@ -77,4 +77,40 @@ test("Absent more that 180 days, should return 0 remaining day", ()=> {
     ];
     const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
     expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(0)
+});
+
+test("Return on the same day absence should remain 180 days", ()=> {
+    const currentDate = moment(new Date("11-11-2019"));
+    let absentList = [
+        {
+            "start": '10-01-2019',
+            "end": '10-01-2019'
+        }
+    ];
+    const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(180)
+});
+
+test("Return the next day absence should remain 180 days", ()=> {
+    const currentDate = moment(new Date("11-11-2019"));
+    let absentList = [
+        {
+            "start": '10-01-2019',
+            "end": '11-01-2019'
+        }
+    ];
+    const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(180)
+});
+
+test("Should consider absent days within the period", ()=> {
+    const currentDate = moment(new Date("11-11-2019"));
+    let absentList = [
+        {
+            "start": '10-11-2018',
+            "end": '15-11-2018'
+        }
+    ];
+    const transformedAbsentList = transformInputDateListToMomentDate(absentList, DATE_FORMAT);
+    expect(calculateRemainingAbsentDays(transformedAbsentList, currentDate)).toBe(176)
 });
