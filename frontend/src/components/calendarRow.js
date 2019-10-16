@@ -3,8 +3,8 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import styled from '@emotion/styled';
-import * as moment from 'moment';
-import { calculateRemainingAbsentDays } from '../lib/ilrCalculator';
+import moment from 'moment';
+import { calculateRemainingAbsentDays, transformInputDateListToMomentDate } from '../lib/ilrCalculator';
 import { dates } from '../lib/datesStore';
 
 const Container = styled.div({
@@ -39,7 +39,7 @@ export const CalendarRow = ({ updateStartDate, updateEndDate, id }) => {
           end: date.end.format('DD-MM-YYYY')
         }
       });
-      console.log(calculateRemainingAbsentDays(stringDates, currentDate));
+      console.log(calculateRemainingAbsentDays(transformInputDateListToMomentDate(stringDates), currentDate));
     }
 
   };
