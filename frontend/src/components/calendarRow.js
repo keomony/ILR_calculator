@@ -4,7 +4,8 @@ import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import styled from '@emotion/styled';
 import * as moment from 'moment';
-import {calculateRemainingAbsentDays} from '../bins/ilrCalculator';
+import { calculateRemainingAbsentDays } from '../lib/ilrCalculator';
+import { dates } from '../lib/datesStore';
 
 const Container = styled.div({
   display: 'flex',
@@ -17,10 +18,31 @@ const Button = styled.button({
   alignSelf: 'center'
 });
 
-export const CalendarRow = () => {
+export const CalendarRow = ({ updateStartDate, updateEndDate, id }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState('startDate');
+  const currentDate = moment();
+
+  const onDatesChange = ({ startDate, endDate }) => {
+    if (startDate) {
+      setStartDate(startDate);
+      updateStartDate(id, startDate);
+    }
+    if (endDate) {
+      setEndDate(endDate);
+      updateEndDate(id, endDate);
+
+      const stringDates = Object.values(dates).map(date => {
+        return {
+          start: date.start.format('DD-MM-YYYY'),
+          end: date.end.format('DD-MM-YYYY')
+        }
+      });
+      console.log(calculateRemainingAbsentDays(stringDates, currentDate));
+    }
+
+  };
 
   return (
     <Container>
@@ -29,14 +51,8 @@ export const CalendarRow = () => {
         startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
         endDate={endDate} // momentPropTypes.momentObj or null,
         endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-        onDatesChange={({ startDate, endDate }) => {
-          if(startDate) setStartDate(startDate);
-          if(endDate) setEndDate(endDate);
-          // calculateRemainingAbsentDays([{
-          //   start: startDate,
-          //   end: endDate
-          // }]);
-        }} // PropTypes.func.isRequired,
+        isOutsideRange={()=>false}
+        onDatesChange={onDatesChange} // PropTypes.func.isRequired,
         focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
         onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
       />
