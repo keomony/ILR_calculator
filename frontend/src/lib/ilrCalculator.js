@@ -26,7 +26,8 @@ function calcBeginDateFromToday(daysBeforeToday, currentDate) {
 
 
 function filterAbsentDatesMustFallWithinPeriod(beginDate, absentList){
-    const filteredEndDateAfterBeginDateList =  absentList.filter(interval => interval.end.isSameOrAfter(beginDate) && !interval.start.isSame(interval.end));
+    const filteredEndDateAfterBeginDateList =  absentList.filter(interval => 
+        !interval.start.isSame(interval.end) &&interval.end.isSameOrAfter(beginDate));
     return filteredEndDateAfterBeginDateList.map(interval => {
         if (interval.start.isBefore(beginDate)) {
             interval.start = beginDate.subtract(1, 'days').startOf('day');
