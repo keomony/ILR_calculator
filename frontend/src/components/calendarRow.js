@@ -18,11 +18,12 @@ const Button = styled.button({
   alignSelf: 'center'
 });
 
-export const CalendarRow = ({ updateStartDate, updateEndDate, id }) => {
+export const CalendarRow = ({ updateStartDate, updateEndDate, id, setRemainingDays }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState('startDate');
   const currentDate = moment();
+  console.log("today date", currentDate);
 
   const onDatesChange = ({ startDate, endDate }) => {
     if (startDate) {
@@ -39,7 +40,9 @@ export const CalendarRow = ({ updateStartDate, updateEndDate, id }) => {
           end: date.end.format('DD-MM-YYYY')
         }
       });
-      console.log(calculateRemainingAbsentDays(transformInputDateListToMomentDate(stringDates), currentDate));
+      const remainingDays = calculateRemainingAbsentDays(transformInputDateListToMomentDate(stringDates), currentDate);
+      setRemainingDays(remainingDays);
+
     }
 
   };
