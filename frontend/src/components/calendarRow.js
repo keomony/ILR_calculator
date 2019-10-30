@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker, isInclusivelyBeforeDay } from 'react-dates';
 import styled from '@emotion/styled';
 import moment from 'moment';
 import { calculateRemainingAbsentDays, transformInputDateListToMomentDate } from '../lib/ilrCalculator';
@@ -54,7 +54,7 @@ export const CalendarRow = ({ updateStartDate, updateEndDate, id, setRemainingDa
         startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
         endDate={endDate} // momentPropTypes.momentObj or null,
         endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-        isOutsideRange={()=>false}
+        isOutsideRange={day => !isInclusivelyBeforeDay(day, currentDate)}
         onDatesChange={onDatesChange} // PropTypes.func.isRequired,
         focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
         onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
