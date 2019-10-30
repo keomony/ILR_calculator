@@ -13,17 +13,11 @@ const Container = styled.div({
   marginBottom: '1rem'
 });
 
-const Button = styled.button({
-  height: 'fit-content',
-  alignSelf: 'center'
-});
-
 export const CalendarRow = ({ updateStartDate, updateEndDate, id, setRemainingDays }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState('startDate');
   const currentDate = moment();
-  console.log("today date", currentDate);
 
   const onDatesChange = ({ startDate, endDate }) => {
     if (startDate) {
@@ -59,7 +53,6 @@ export const CalendarRow = ({ updateStartDate, updateEndDate, id, setRemainingDa
         focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
         onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
       />
-      <Button>delete</Button>
     </Container>
   );
 }

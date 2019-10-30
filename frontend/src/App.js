@@ -12,7 +12,6 @@ const App = () => {
     const handleAddCalendar = () => {
         calendars.push(0);
         setCalender([...calendars]);
-        console.log('handleAddCalendar', calendars);
     }
 
     const removeCalendar = (calendarIndex) => {
