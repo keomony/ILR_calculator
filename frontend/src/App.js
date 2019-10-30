@@ -10,7 +10,7 @@ const App = () => {
 
 
     const handleAddCalendar = () => {
-        calendars.push(0);
+        calendars.push("");
         setCalender([...calendars]);
     }
 
@@ -21,18 +21,19 @@ const App = () => {
 
     return (
         <div>
-        <h3 align="center"> Tier 2 visa holder: Indefinite Leave to Remain </h3>
+          <h3 align="center"> Tier 2 visa holder: Indefinite Leave to Remain </h3>
 
-    {calendars.map((c, index) => {
-        return (<div key={index}>
-        <CalendarRow updateStartDate={start} updateEndDate={end} id={index} setRemainingDays={setRemainingDays} />
-    <button onClick={()=>{removeCalendar(index)}}>remove</button>
-    </div>)
-    })}
-<div>The remaining days: {remainingDays}</div>
-    <div><button onClick={handleAddCalendar}>add calendar</button> {calendars}</div>
-    </div>
-);
+          {calendars.map((c, index) => {
+              return (<div key={index}>
+                        <CalendarRow updateStartDate={start} updateEndDate={end} id={index} setRemainingDays={setRemainingDays} />
+                        <button onClick={()=>{removeCalendar(index)}}>remove</button>
+                      </div>)
+          })}
+
+          <div>The remaining days: {remainingDays}</div>
+          <div><button onClick={handleAddCalendar}>add calendar</button>{calendars}</div>
+        </div>
+    );
 }
 
 export default App;
