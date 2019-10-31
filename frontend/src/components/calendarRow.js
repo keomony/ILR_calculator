@@ -49,6 +49,7 @@ export const CalendarRow = ({ updateStartDate, updateEndDate, id, setRemainingDa
         endDate={endDate} // momentPropTypes.momentObj or null,
         endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
         isOutsideRange={day => !isInclusivelyBeforeDay(day, currentDate)}
+        displayFormat="DD-MM-YYYY"
         onDatesChange={onDatesChange} // PropTypes.func.isRequired,
         focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
         onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
