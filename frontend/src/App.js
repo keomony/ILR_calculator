@@ -31,7 +31,7 @@ const App = () => {
           })}
 
           <div>The remaining days: {remainingDays}</div>
-          <div><button onClick={handleAddCalendar}>add calendar</button>{calendars}</div>
+          <div><button onClick={handleAddCalendar}>add calendar</button></div>
         </div>
     );
 }
